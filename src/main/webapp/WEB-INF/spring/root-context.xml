@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:task="http://www.springframework.org/schema/task"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+   https://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context-4.3.xsd
+   http://www.springframework.org/schema/task
+   http://www.springframework.org/schema/task/spring-task-4.3.xsd
+   ">
+	 
+      <!-- db.properties 읽어오기 -->
+   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="location">
+         <value>classpath:db.properties</value>
+      </property>
+   </bean>
+   
+   <!-- db.properties의 설정 값을 읽어서 setting -->
+   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="${driver}" />
+      <property name="url" value="${url}" />
+      <property name="username" value="${user}" />
+      <property name="password" value="${password}" />
+   </bean>
+      
+   <!-- 트랙잭션 관리를 위한 빈설정 -->
+   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="dataSource" />
+   </bean>
+   
+   <!-- sqlSessionFactory -->
+   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+      <property name="configLocation" value="classpath:mybatis-config.xml" />
+   </bean>
+   
+   <!-- sqlSession -->
+   <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+      <constructor-arg index="0" name="sqlSessionFactory" ref="sqlSessionFactory" />
+   </bean>
+
+   <!-- file upload를 위한 bean 설정 -->
+   <bean name="multipartResolver"
+      class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+      <property name="maxUploadSize" value="10485760"></property>
+   </bean>   
+      
+   
+   <!-- Google 소셜 로그인 연결 설정 -->
+    <bean id="googleOAuth2Template"
+        class="org.springframework.social.google.connect.GoogleOAuth2Template">
+        <constructor-arg
+            value="353555556185-manu29fcan3f1719f7ta1b9qvhapkr25.apps.googleusercontent.com" />
+        <constructor-arg value="LSN4YL9zEbisJdGrWrqAGIz_" />
+    </bean>
+ 
+ 
+    <bean id="googleOAuth2Parameters"
+        class="org.springframework.social.oauth2.OAuth2Parameters">
+        <property name="scope"
+            value="email profile"></property>
+        <property name="redirectUri"
+            value="http://localhost:8888/socialapi/googleLogin" />
+    </bean>
+ 
+    <bean id="authInfo" class="com.memoko.integrated.socialapi.vo.AuthInfo">
+        <constructor-arg
+            value="353555556185-manu29fcan3f1719f7ta1b9qvhapkr25.apps.googleusercontent.com" />
+        <constructor-arg value="LSN4YL9zEbisJdGrWrqAGIz_" />
+    </bean>
+       
+	<bean id="ReferenceImageScheduler" class="com.memoko.integrated.recipe.controller.ReferenceImageScheduler" />	
+	<task:scheduled-tasks scheduler="referenceScheduler">
+		<task:scheduled ref="ReferenceImageScheduler" method="referenceImageSchedule" cron="0 0/5 * * * *"/>	
+	</task:scheduled-tasks>
+	
+	<task:scheduler id="referenceScheduler" pool-size="10"/>
+
+	<bean id="ChatTextReseter" class="com.memoko.integrated.chat.controller.ChatController" />	
+	<task:scheduled-tasks scheduler="chatTextReseter">
+		<task:scheduled ref="ChatTextReseter" method="chatTextReset" cron="0 0/30 * * * *"/>	
+	</task:scheduled-tasks>
+	
+	<task:scheduler id="chatTextReseter" pool-size="10"/>
+
+
+
+</beans>

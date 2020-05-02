@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.memoko.integrated.member.dao.MemberMapper">
+
+<insert id="insertMember" parameterType="member">
+insert into member(
+   member_id
+   ,member_pw
+   ,member_nickname
+   ,member_email
+   <if test="member_favorite != '' and member_favorite != null">
+		,member_favorite
+   </if>
+)
+values(
+   #{member_id}
+   ,#{member_pw}
+   ,#{member_nickname}
+   ,#{member_email}
+   <if test="member_favorite != null and member_favorite != ''">
+		,#{member_favorite}
+   </if>
+)
+</insert>
+
+<select id="memberSelectOne" parameterType="String" resultType="member">
+select
+   member_id
+   ,member_pw
+   ,member_nickname
+   ,member_email
+   ,member_favorite
+from
+   member
+where
+   member_id = #{userId}
+</select>
+
+<update id="memberUpdate" parameterType="member">
+	update
+		member
+	<set>
+		member_nickname = #{member_nickname}
+		,member_email = #{member_email}
+		<if test="member_favorite != null and member_favorite != ''">
+			,member_favorite = #{member_favorite}
+		</if>
+		<if test="member_pw != null and member_pw != ''">
+			,member_pw = #{member_pw}
+		</if>
+	</set>
+	where
+		member_id = #{member_id}
+</update>
+<insert id="addRecipeLike" parameterType="recipeLike">
+	insert into	recipe_likes(
+		recipe_num,
+		member_id
+	)values(
+		#{recipe_num}
+		,#{member_id}
+	)
+</insert>
+
+<delete id="removeRecipeLike" parameterType="recipeLike">
+	delete
+		from recipe_likes
+	where
+		recipe_num = #{recipe_num}
+</delete>
+
+<insert id="addReviewLike" parameterType="reviewLike">
+	insert into	review_likes(
+		review_num,
+		member_id
+	)values(
+		#{review_num}
+		,#{member_id}
+	)
+</insert>
+
+<delete id="removeReviewLike" parameterType="reviewLike">
+	delete
+		from review_likes
+	where
+		review_num = #{review_num}
+</delete>
+
+
+  	
+<select id="getLikeRecipesById" parameterType="String" resultType="int">
+select
+	recipe_num
+from
+	recipe_likes
+where
+	member_id = #{member_id}
+</select>
+
+<select id="getLikeReviewsById"  parameterType="String" resultType="int">
+select
+	review_num
+from
+	review_likes
+where
+	member_id = #{member_id}
+</select>
+		
+<select id="getIdsByNickname" parameterType="String" resultType="String">
+select
+	member_id
+from
+	member
+where
+	member_nickname = #{searchText}
+
+</select>
+</mapper>

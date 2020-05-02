@@ -1,0 +1,171 @@
+/* ---------------nav.css-------------- */
+@charset "UTF-8";
+@font-face {
+   font-family: 'Handon3gyeopsal600g';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal600g.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+   }
+      body{
+         font-family: 'Handon3gyeopsal600g';
+      }
+    
+         
+      #mainNav{
+         background-color: #FFDC3C;   
+      }
+      
+    .memoco_logo{
+		width: 148.5px;
+	}
+	
+      
+	@font-face {
+	   font-family: 'BBTreeGR';
+	   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_nine_@1.1/BBTreeGR.woff') format('woff');
+	   font-weight: normal;
+	   font-style: normal;
+	}      
+      .text_in_card{
+         font-family: 'BBTreeGR';
+      }
+    
+         .join{
+            position: absolute;
+            width: 165px;
+            height: 28px;
+            left: 904px;
+            top: 51px;
+            text-decoration:none;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 36px;
+            line-height: 42px;
+            color: #000000;
+         }
+         
+         .login{
+            position: absolute;
+            width: 109px;
+            height: 33px;
+            left: 1053px;
+            top: 51px;
+            text-decoration:none;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 36px;
+            line-height: 42px;
+    
+            color: #000000;
+         }
+      
+      
+          .modal-body{
+               text-align: center;
+            }      
+         
+		/* 모달 창의 input내부 텍스트 가운데정렬 */
+         .modal-last-center{
+         	text-align-last: center;
+         }
+         
+         .mo1-text{
+             padding: 5px 10px;
+             text-align: center;
+             position: absolute;
+             top: 500px;
+             left: 400px;
+             color: white;
+             font-weight:600;
+             font-size: xx-large;
+             transform: translate( -50%, -50% );
+         }
+         
+         .mo2-text{
+             padding: 5px 10px;
+             text-align: center;
+             position: absolute;
+             top: 500px;
+             left: 1300px;
+             color: white;
+             font-weight:600;
+             font-size: xx-large;
+             transform: translate( -50%, -50% );
+         }   
+         
+            #overlay {
+              position: fixed; /* Sit on top of the page content */
+              display: none; /* Hidden by default */
+              width: 100%; /* Full width (cover the whole page) */
+              height: 100%; /* Full height (cover the whole page) */
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+              z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+              cursor: pointer; /* Add a pointer on hover */
+              }
+              
+              
+         .main-section{
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 0px;
+            }
+         .user-img{
+            margin-top:-5px;
+            }
+         .user-img img{
+            height: 100px;
+            width: 100px;
+            }
+         .user-name{
+            margin:10px 0px;
+            }
+         .user-name h1{
+            font-size:30px;
+            color:#676363;
+            }
+         .user-name button{
+            position: absolute;   
+            top:-50px;
+            right:20px;
+            font-size:30px;
+            }
+         .form-input button{
+            width: 100%;
+            margin-bottom: 20px;
+            }
+         .link-part{
+            border-radius:0px 0px 5px 5px;
+            background-color: #ECF0F1;
+            padding:15px;
+            border-top:1px solid #c2c2c2;
+            }
+         .open-modal{
+            margin-top:100px !important;
+            }
+            
+         #joinCheck{
+                width: 600px;
+                height: 400px;
+                padding-left: 150px;
+                padding-top: 30px;
+               }
+        #joinForm{
+        text-align: center;
+        }     
+        
+        .idCheckDiv{
+        padding-left: 350px;
+     }
+     a{color: black;}
+     a:hover { color:#28a745; text-decoration: none;}
+     
+     
+     
+     
+     

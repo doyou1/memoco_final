@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+   <typeAliases>
+      <typeAlias type="com.memoko.integrated.member.vo.MemberVO" alias="member"/>
+      <typeAlias type="com.memoko.integrated.member.vo.RecipeLikesVO" alias="recipeLike"/>
+      <typeAlias type="com.memoko.integrated.member.vo.ReviewLikesVO" alias="reviewLike"/>
+      <typeAlias type="com.memoko.integrated.recipe.vo.RecipeVO" alias="recipe"/>
+      <typeAlias type="com.memoko.integrated.recipe.vo.PrintRecipeVO" alias="printRecipe"/>
+      <typeAlias type="com.memoko.integrated.recipe.vo.RecipeContentVO" alias="recipeContent"/>
+      <typeAlias type="com.memoko.integrated.recipe.vo.RecipeIngrdVO" alias="recipeIngrd"/>
+      <typeAlias type="com.memoko.integrated.recipe.vo.MongoCloneVO" alias="mongoRecipe"/>
+      <typeAlias type="com.memoko.integrated.review.vo.ReviewVO" alias="review"/>
+      <typeAlias type="com.memoko.integrated.review.vo.PrintReviewVO" alias="printReview"/>
+      <typeAlias type="com.memoko.integrated.review.vo.ReplyVO" alias="reply"/>
+   </typeAliases>
+   <mappers>
+      <mapper resource="mapper/memberMapper.xml" />
+      <mapper resource="mapper/recipeMapper.xml" />
+      <mapper resource="mapper/mongoRecipeMapper.xml" />
+      <mapper resource="mapper/reviewMapper.xml" />
+   </mappers>
+</configuration>

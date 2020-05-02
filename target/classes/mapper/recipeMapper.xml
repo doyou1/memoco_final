@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.memoko.integrated.recipe.dao.OracleDBRecipeMapper">
+	<insert id="insertRecipe" parameterType="recipe">
+		insert into recipe(
+			recipe_num
+			,member_id
+			,recipe_title
+		)values(
+			recipe_seq.nextval
+			,#{member_id}
+			,#{recipe_title}
+		)
+		<selectKey keyProperty="recipe_num" resultType="java.lang.Integer" order="AFTER">
+			select recipe_seq.currval from dual
+		</selectKey>
+	</insert>
+	
+	<insert id="insertRecipeContent" parameterType="recipeContent">
+
+		insert into recipe_content
+		(
+			content_num
+			,member_id
+			,recipe_num
+			<if test="recipe_content != null and recipe_content != ''">
+			,recipe_content
+			</if>
+			<if test="recipe_image != null and recipe_image != ''">
+			,recipe_image
+			</if>
+		)
+		values
+		(
+			#{content_num}
+			,#{member_id}
+			,#{recipe_num}
+			<if test="recipe_content != null and recipe_content != ''">
+			,#{recipe_content}
+			</if>
+			<if test="recipe_image != null and recipe_image != ''">
+			,#{recipe_image}
+			</if>
+		)
+
+	</insert>
+
+	<insert id="insertRecipeIngrd" parameterType="recipeIngrd">
+
+		insert into recipe_ingrd
+		(
+			recipe_num
+			,member_id
+			,ingrd_num
+			<if test="ingrd_name != null and ingrd_name != ''">
+			,ingrd_name
+			</if>
+			<if test="ingrd_amount != null and ingrd_amount != ''">
+			,ingrd_amount
+			</if>
+		)
+		values
+		(
+			#{recipe_num}
+			,#{member_id}
+			,#{ingrd_num}
+			<if test="ingrd_name != null and ingrd_name != ''">
+			,#{ingrd_name}
+			</if>
+			<if test="ingrd_amount != null and ingrd_amount != ''">
+			,#{ingrd_amount}
+			</if>	
+		)
+
+	</insert>
+	
+	<!-- 음식이름으로 검색(레시피의 번호 리스트) -->
+	<select id="searchRecipeNumByTitle" parameterType="String" resultType="integer">
+	select 
+		recipe_num
+	from 
+		recipe
+	where
+		recipe_title like '%'||#{searchText}||'%'
+	order by
+		recipe_num
+	</select>
+	
+	<!-- searchrecipetitle에서 받았던 번호들에 대한 레시피 리스트출력 -->
+	<select id="searchRecipeByNum" parameterType="int" resultType="recipe">
+	select
+		*
+	from
+		recipe
+	where
+		recipe_num = #{searchNum}
+	</select>
+	
+	<!-- searchrecipetitle에서 받았던 번호들에 대한 사진리스트출력(썸네일사진을 얻기위함) -->
+	<select id="searchRecipeContentByNum" parameterType="int" resultType="recipeContent">
+	select
+		*
+	from
+		recipe_content
+	where
+		recipe_num = #{searchNum}
+	order by
+		content_num
+	</select>
+
+	<!-- searchrecipetitle에서 받았던 번호들에 대한 사진리스트출력(썸네일사진을 얻기위함) -->
+	<select id="searchRecipeIngrdByNum" parameterType="int" resultType="recipeIngrd">
+	select
+		*
+	from
+		recipe_ingrd
+	where
+		recipe_num = #{searchNum}
+	order by
+		ingrd_num
+	</select>
+	
+	<!-- 재료이름으로 검색(레시피의 번호 리스트) -->
+	<select id="searchRecipeNumByIngrd" parameterType="String" resultType="integer">
+	select 
+		recipe_num
+	from 
+		recipe_ingrd
+	where
+		ingrd_name like '%'||#{searchText}||'%'
+	order by
+		recipe_num
+	</select>
+
+	<select id="searchRecipeNumByUserId" parameterType="String" resultType="integer">
+	select 
+		recipe_num
+	from 
+		recipe_ingrd
+	where
+		upper(member_id) = upper(#{userId})
+	order by
+		recipe_num
+	</select>
+
+	<update id="updateRecipe" parameterType="recipe">
+		update
+			recipe
+		<set>
+			recipe_title = #{recipe_title}
+		</set>
+		where
+			recipe_num = #{recipe_num}
+	</update>
+
+	<update id="updateRecipeIngrd" parameterType="recipeIngrd">
+	<if test="ingrd_name != null and ingrd_amount != null">
+	update
+		recipe_ingrd
+	<set>
+		<if test="ingrd_name != null and ingrd_name != ''">
+		ingrd_name = #{ingrd_name}
+			</if>
+		<if test="ingrd_amount != null and ingrd_amount != ''">
+		,ingrd_amount = #{ingrd_amount}
+		</if>
+	</set>	
+	<where>
+		recipe_num = #{recipe_num}
+		and
+		ingrd_num = #{ingrd_num}
+	</where>
+	</if>
+	</update>
+
+	<delete id="deleteRecipeIngrd" parameterType="recipeIngrd">
+		delete
+		from
+			recipe_ingrd
+		where
+			recipe_num = #{recipe_num}
+			and
+			ingrd_num = #{ingrd_num}				
+	</delete>
+	
+		
+	<update id="updateRecipeContent" parameterType="recipeContent">
+		update
+			recipe_content
+		<set>
+			<if test="recipe_content != null and recipe_content != ''">
+				recipe_content = #{recipe_content}
+			</if>		
+			<if test="recipe_image != null and recipe_image != ''">
+				,recipe_image = #{recipe_image}
+			</if>
+		</set>
+		<where>
+			recipe_num = #{recipe_num}
+			and
+			content_num = #{content_num}
+		</where>
+	</update>
+
+	<select id="getRecipeContentByContentNum" parameterType="recipeContent" resultType="recipeContent">
+		select
+			*
+		from
+			recipe_content
+		
+		where
+			recipe_num = #{recipe_num}
+			and
+			content_num = #{content_num}
+	</select>
+			
+	<delete id="deleteRecipeContent" parameterType="recipeContent">
+		delete
+		from
+			recipe_content
+		where
+			recipe_num = #{recipe_num}
+			and
+			content_num = #{content_num}	
+	</delete>
+	<update id="addRecipeLikes" parameterType="int">
+		update
+			recipe
+		set
+			recipe_likes = recipe_likes + 1
+		where
+			recipe_num = #{recipe_num}
+	</update>
+	<update id="minusRecipeLikes" parameterType="int">
+		update
+			recipe
+		set
+			recipe_likes = recipe_likes - 1
+		where
+			recipe_num = #{recipe_num}
+	</update>
+	
+	<select id="getRecipeNums" resultType="int">
+		select
+			recipe_num
+		from
+			recipe
+	</select>
+	
+	<select id="getRecipesByRecipeNums" parameterType="java.util.HashMap" resultType="printRecipe">
+	select
+		r.recipe_num as "recipe_num"
+		,r.recipe_title as "recipe_name"
+		,c.recipe_content as "recipe_content"
+		,r.recipe_hits as "recipe_hits"
+		,r.recipe_likes as "recipe_likes"		
+		from
+			recipe r, recipe_content c
+		<where>
+			r.recipe_num = c.recipe_num
+			and
+			<choose>
+				<when test="recipeNums.size != 0">
+				 r.recipe_num in
+					<foreach collection="recipeNums" item="item" index="index" separator="," open="(" close=")">
+	                    #{item}
+	                </foreach>
+				</when>
+			</choose>
+			</where>
+	</select>
+	
+		
+	<select id="plusRecipeHits" parameterType="int">
+		update
+			recipe
+		set
+			recipe_hits = recipe_hits +1
+		where
+			recipe_num = #{recipe_num}
+	</select>
+</mapper>

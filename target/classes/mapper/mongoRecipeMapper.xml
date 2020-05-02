@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.memoko.integrated.recipe.dao.MongoDBCloneMapper">
+
+<insert id="insertMongoCloneRecipe" parameterType="int">
+insert into
+	mongo_recipe_clone(
+	recipe_num	
+)values(
+	#{recipe_num}
+)
+</insert>
+
+
+<update id="addRecipeLikes" parameterType="int">
+	update
+		mongo_recipe_clone
+	set
+		recipe_likes = recipe_likes + 1
+	where
+		recipe_num = #{recipe_num}
+</update>
+<update id="minusRecipeLikes" parameterType="int">
+	update
+		mongo_recipe_clone
+	set
+		recipe_likes = recipe_likes - 1
+	where
+		recipe_num = #{recipe_num}
+</update>
+
+<select id="getMongoRecipeByNum" parameterType="int" resultType="mongoRecipe">
+select
+	*
+from
+	mongo_recipe_clone
+where
+	recipe_num = #{recipe_num}
+</select>
+
+<select id="getMongoRecipeList" resultType="mongoRecipe">
+select
+	*
+from
+	mongo_recipe_clone
+</select>
+
+<select id="getRecipeNums" resultType="int">
+select
+	recipe_num
+from
+	mongo_recipe_clone
+</select>
+	
+<update id="plusRecipeHits" parameterType="int">
+update
+	mongo_recipe_clone
+set
+	recipe_hits = recipe_hits + 1
+where
+	recipe_num = #{recipe_num}
+</update>
+
+</mapper>

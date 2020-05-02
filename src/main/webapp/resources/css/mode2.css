@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+/* 전체 body bg-color(연한 회색) */
+	body{
+		background-color: #F9F9F9;
+		padding-top: 75px;
+	}
+
+    /* bg-color가 white인 영역 */
+    .white_bg{
+        background-color: white;
+    }
+/*메인 컨텐츠부분의 bg-color가 white인 부분*/
+    /* col-xs/sm인(탭) 이하 */
+    @media (max-width: 767px) {
+        .mainContainer{
+            background-color: #FFFFFF;
+            width: 100%;
+        }
+        
+        .mode1_ct{
+            background-color: #F9F9F9;
+            width: 100%;
+            padding: 0px;
+        }
+        
+        .readform-wrap{
+        	width: 100%;
+        	padding: 0px;
+        }
+        
+        .map{
+        	width:300px;
+        	heigth:300px;
+        }
+    }
+    
+    /* col-md (모니터) 이상 */
+    @media (min-width: 768px) {
+        .mainContainer{
+            background-color: #FFFFFF;
+            width: 80%;
+        }
+        .mode1_ct{
+            background-color: #F9F9F9;
+            width: 100%;
+        }
+        .map{
+        	width:500px;
+        	heigth:500px;
+        }
+    }
+    /* col-lg (모니터) 이상 */
+    @media (min-width: 992px) {
+    	.mainContainer{
+    		background-color: #FFFFFF;
+    		width: 80%;
+    	}
+    	.mode1_ct{
+            background-color: #F9F9F9;
+            width: 80%;
+        }
+        .readform-wrap{
+        	width: 90%
+        }
+    }
+    
+	.row{
+		margin: 0px;
+	}
+    
+    	
+	 /* 메모코 캐릭터 사이즈 */
+   .memoco1_size{
+      width: 220px;
+   }
+   
+   	/* width가 auto(list의 .card-body에 적용) */
+	.auto_w{
+		width: auto!important;
+	}
+
+	/* 커서 올리면 포인터로 바뀌게 하기 */
+	.contentImage, .c_pointer {
+		cursor: pointer;
+	}
+	
+	/* SWIPER CSS */
+	.swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+
+/*     @media (max-width: 760px) {
+      .swiper-button-next {
+        right: 20px;
+        transform: rotate(90deg);
+      }
+
+      .swiper-button-prev {
+        left: 20px;
+        transform: rotate(90deg);
+      }
+    } */
+	
+	/* SWIPER CSS */
+	
+	.relative-box{
+		position: relative;
+	}
+	
+
+	
+	
+	
+	
+	

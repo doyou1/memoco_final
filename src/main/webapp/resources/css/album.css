@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+/* BOOTSTRAP ALBUM CSS */
+	.card-body{
+	padding-top:10px;padding-bottom:10px;
+	}
+	.card-text1{
+		width:10%;padding-right:0;
+	}
+	.card-text2{
+		width:90%;padding-left:0;
+	}
+	.card-a{
+		color:#212529;
+	}
+	.card-img-top{
+		width:324px;height:350px;
+	}	
+/* BOOTSTRAP ALBUM CSS */

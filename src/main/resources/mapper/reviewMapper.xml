@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.memoko.integrated.review.dao.ReviewMapper">
+
+	<insert id="insertReview" parameterType="review">
+		insert into review(
+			review_num
+			,member_id
+			,review_title       
+			,review_content
+			<if test="review_image != null">            
+			,review_image                
+			</if>
+			<if test="recipe_num gt 0">
+			,recipe_num
+			</if>
+		)values(
+			review_seq.nextval
+			,#{member_id}
+			,#{review_title}
+			,#{review_content}
+			<if test="review_image != null"> 
+			,#{review_image}
+			</if>
+			<if test="recipe_num gt 0">
+			,#{recipe_num}
+			</if>
+		)		
+	</insert>
+	<select id="selectAllReviewList" resultType="printReview">
+		select
+			*
+		from
+			review
+		order by
+			review_indate desc
+	</select>
+		
+	<select id="selectReplysByReviewNum" parameterType="int" resultType="reply">
+		select
+			*
+		from
+			review_reply
+		where
+			review_num = #{review_num}
+		order by
+			reply_num
+	</select>
+	<update id="addReviewLikes" parameterType="int">
+		update
+			review
+		set
+			review_likes = review_likes + 1
+		where
+			review_num = #{review_num}
+	</update>
+	<update id="minusReviewLikes" parameterType="int">
+		update
+			review
+		set
+			review_likes = review_likes - 1
+		where
+			review_num = #{review_num}
+	</update>
+	
+	<insert id="insertReply" parameterType="reply">
+		insert into review_reply(
+			reply_num
+			,review_num
+			,member_id
+			,reply_content
+		)values(
+			review_reply_seq.nextval
+			,#{review_num}
+			,#{member_id}
+			,#{reply_content}
+		)
+		
+		<selectKey keyProperty="reply_num" resultType="java.lang.Integer" order="AFTER">
+			select review_reply_seq.currval from dual
+		</selectKey>
+	</insert>
+		
+	<select id="selectReplyByReplyNum" parameterType="int" resultType="reply">
+	select
+		*
+	from
+		review_reply
+	where
+		reply_num = #{reply_num}
+	</select>
+	
+	<select id="searchReviewsById" parameterType="String" resultType="printReview">
+		select
+			*
+		from
+			review
+		where
+			member_id = #{member_id}
+		order by
+			review_indate desc
+	</select>
+
+	<select id="getReviewsByReviewTitle" parameterType="String" resultType="printReview">
+		select
+			*
+		from
+			review
+		where
+			review_title like '%'||#{review_title}||'%'
+		order by
+			review_indate desc
+	</select>
+
+	<select id="getReviewsByReviewContent" parameterType="String" resultType="printReview">
+		select
+			*
+		from
+			review
+		where
+			review_content like '%'|| #{review_content} ||'%'
+		order by
+			review_indate desc
+	</select>
+	<select id="getReviewsByRecipeNums" parameterType="java.util.HashMap" resultType="printReview">
+		select
+			*
+		from
+			review
+		<where>
+			<choose>
+				<when test="recipeNums.size != 0">
+				recipe_num in
+					<foreach collection="recipeNums" item="item" index="index" separator="," open="(" close=")">
+	                    #{item}
+	                </foreach>
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	<update id="updateReply" parameterType="reply">
+		update
+			review_reply
+		set
+			reply_content = #{reply_content}
+		where
+			reply_num = #{reply_num}
+	</update>
+	<delete id="deleteReply" parameterType="reply">
+		delete
+		from
+			review_reply
+		where
+			reply_num = #{reply_num}
+			and
+			member_id = #{member_id}
+	</delete>
+
+	<delete id="deleteReview" parameterType="review">
+		delete
+		from
+			review
+		where
+			review_num = #{review_num}
+			and
+			member_id = #{member_id}
+	</delete>
+		
+	<select id="getReviewByReviewNum" parameterType="int" resultType="printReview">
+		select
+			*
+		from
+			review
+		where
+			review_num = #{review_num}
+	</select>
+	
+
+		
+	<update id="updateReview" parameterType="review">
+		update
+			review
+		<set>
+			review_title = #{review_title}
+			,review_content = #{review_content}
+			<if test="review_image != null and review_image != ''">
+			,review_image = #{review_image}
+			</if>
+		</set>
+		where
+			review_num = #{review_num}
+	</update>
+	
+	<select id="getReviewsByCount" parameterType="int" resultType="printReview">
+		select
+			*
+		from
+			review
+		order by
+    		review_num desc
+	</select>
+	
+	<select id="getReviewsCount" resultType="int">
+		select
+			count(*)
+		from
+			review
+		order by
+			review_num
+	</select>
+	
+	
+	<select id="getReviewsCountByReviewNum" parameterType="int" resultType="int">
+		select
+			count(*)
+		from
+			review
+		where
+			review_num >= #{review_num}
+	</select>
+	
+	<select id="getReferencedRecipes" resultType="printRecipe">
+		select
+			*
+		from
+			recipe
+		where
+			recipe_num = (
+						select
+						    recipe_num
+						from
+						    review
+						where
+						    not recipe_num = 0
+						)
+	</select>
+	
+	<select id="getReferencedRecipeNums" resultType="int">
+		select
+		    recipe_num
+		from
+		    review
+		where
+		    not recipe_num = 0
+	</select>
+			
+	<select id="getReviewsByUserId" parameterType="String" resultType="printReview">
+		select
+			*
+		from
+			review
+		where
+			member_id = #{member_id}
+	</select>
+</mapper>
